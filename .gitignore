@@ -1,0 +1,16 @@
+# Eclipse / IDE files
+.metadata/
+.settings/
+.project
+.classpath
+
+# Build folders
+target/
+bin/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
