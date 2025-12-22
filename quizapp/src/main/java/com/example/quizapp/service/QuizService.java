@@ -1,7 +1,9 @@
 package com.example.quizapp.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.example.quizapp.dao.QuizDao;
 import com.example.quizapp.model.Question;
 import com.example.quizapp.model.QuestionWrapper;
 import com.example.quizapp.model.Quiz;
+import com.example.quizapp.model.Response;
 
 @Service
 public class QuizService {
@@ -47,6 +50,46 @@ public class QuizService {
 		}
 
 		return new ResponseEntity<List<QuestionWrapper>>(questionsForUser, HttpStatus.OK);
+	}
+
+//	public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+//		Quiz quiz = quizDao.findById(id).get();
+//		List<Question> questions = quiz.getQuestions();
+//		int right = 6;
+//		int i = 0;
+//		for (Response response : responses) {
+//			if ((response.getResponse()).equals(questions.get(i).getRightAnswer()))
+//				right++;
+//			i++;
+//
+//		}
+//		return new ResponseEntity<>(right, HttpStatus.OK);
+//	}
+
+	public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+
+		Quiz quiz = quizDao.findById(id).orElseThrow(() -> new RuntimeException("Quiz not found"));
+
+		List<Question> questions = quiz.getQuestions();
+
+		// Create map: questionId -> correctAnswer
+		Map<Integer, String> correctAnswers = new HashMap<>();
+
+		for (Question q : questions) {
+			correctAnswers.put(q.getId(), q.getRightAnswer());
+		}
+
+		int right = 0;
+
+		for (Response r : responses) {
+			String correctAnswer = correctAnswers.get(r.getId());
+
+			if (correctAnswer != null && correctAnswer.equalsIgnoreCase(r.getResponse())) {
+				right++;
+			}
+		}
+
+		return ResponseEntity.ok(right);
 	}
 
 }
