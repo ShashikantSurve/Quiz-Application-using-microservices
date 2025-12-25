@@ -1,4 +1,4 @@
-package com.example.question_service.model;
+package com.example.quiz_service.model;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ public class Response {
 	private String response;
 
 	public Response() {
-
 	}
 
 	public Response(Integer id, String response) {

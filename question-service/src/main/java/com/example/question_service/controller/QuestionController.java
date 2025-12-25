@@ -27,7 +27,6 @@ public class QuestionController {
 	@GetMapping("allquestions")
 	public ResponseEntity<List<Question>> getAllQuestions() {
 		return questionService.getAllQuestions();
-
 	}
 
 	@GetMapping("category/{category}")
@@ -54,7 +53,10 @@ public class QuestionController {
 	}
 
 	@PostMapping("getScore")
-	public ResponseEntity<Integer> getScore(@RequestBody List<Response>)
+	public ResponseEntity<Integer> getScore(@RequestBody List<Response> responses) {
+		return questionService.getScore(responses);
+
+	}
 
 	// Generate
 	// getQuestions(question id)

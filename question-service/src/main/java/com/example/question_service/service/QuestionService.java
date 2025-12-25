@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.question_service.dao.QuestionDao;
 import com.example.question_service.model.Question;
 import com.example.question_service.model.QuestionWrapper;
+import com.example.question_service.model.Response;
 
 @Service
 public class QuestionService {
@@ -69,6 +70,18 @@ public class QuestionService {
 		}
 
 		return new ResponseEntity<>(wrappers, HttpStatus.OK);
+	}
+
+	public ResponseEntity<Integer> getScore(List<Response> responses) {
+		int right = 0;
+		for (Response response : responses) {
+			Question question = questionDao.findById(response.getId()).get();
+			if ((response.getResponse()).equals(question.getRightAnswer()))
+				right++;
+
+		}
+		return new ResponseEntity<>(right, HttpStatus.OK);
+
 	}
 
 }
